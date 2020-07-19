@@ -1,12 +1,22 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:11.0.8-jre-slim as base-build
+
+RUN apt-get -y update \
+    && apt-get install -y --no-install-recommends wget \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove && apt-get autoclean
+
+
+FROM base-build
 
 LABEL maintainer="Sandeep Aggarwal <asandeep.me@gmail.com>"
 
-ENV TIKA_VERSION 1.22
-ENV TIKA_APP_URL https://www.apache.org/dist/tika/tika-app-$TIKA_VERSION.jar
+ARG TIKA_VERSION
+ENV TIKA_VERSION=${TIKA_VERSION}
 
-RUN	apk update \
-    && apk add curl \
-    && curl $TIKA_APP_URL -o tika-app-${TIKA_VERSION}.jar
+COPY entrypoint.sh /entrypoint.sh
 
-CMD /bin/sh
+RUN	wget https://archive.apache.org/dist/tika/tika-app-${TIKA_VERSION}.jar -O /tika-app-${TIKA_VERSION}.jar
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["tika", "--help"]

@@ -15,7 +15,7 @@ ENV TIKA_VERSION=${TIKA_VERSION}
 
 COPY entrypoint.sh /entrypoint.sh
 
-RUN wget https://archive.apache.org/dist/tika/tika-app-${TIKA_VERSION}.jar -O /tika-app-${TIKA_VERSION}.jar
+RUN wget https://archive.apache.org/dist/tika/tika-app-${TIKA_VERSION}.jar -O /tika-app-${TIKA_VERSION}.jar -q --show-progress
 
 ENTRYPOINT ["/entrypoint.sh"]
 

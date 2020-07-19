@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION_TAG=$(<current_versino)
+VERSION_TAG=$(<current_version)
 
 docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${VERSION_TAG}
 docker push ${DOCKER_REPO}:${VERSION_TAG}
